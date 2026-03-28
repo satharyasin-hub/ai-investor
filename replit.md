@@ -1,8 +1,8 @@
-# Workspace
+# AI Investor — Hybrid Multi-Agent Trading Decision Engine
 
 ## Overview
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+A production-ready stock analysis web application powered by a 9-agent AI system. Simulates NSE/insider data with realistic volume spikes, price anomalies, and mock smart money signals when real data is unavailable.
 
 ## Stack
 
@@ -11,86 +11,80 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Package manager**: pnpm
 - **TypeScript version**: 5.9
 - **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
-- **Validation**: Zod (`zod/v4`), `drizzle-zod`
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
+- **Frontend**: React + Vite + Tailwind CSS + Framer Motion
+
+## Architecture
+
+### 9-Agent AI System
+
+1. **Pattern Agent** — Detects chart patterns: Breakout, Breakdown, Double Bottom/Top, Ascending/Descending Triangle, Bullish/Bearish Flag, FVG
+2. **Trend Agent** — Determines Bullish/Bearish/Sideways using MA20/MA50 slopes and MACD
+3. **Risk Agent** — Calculates Entry, Stop Loss, Target with dynamic ATR-based sizing (R:R ≥ 1:2)
+4. **Backtest Agent** (via Pattern Agent) — Historical success rates per pattern
+5. **Confidence Agent** — Bayesian scoring combining all signals (0–100)
+6. **Explanation Agent** — Plain English explanations with beginner translations
+7. **Opportunity Agent** — Dual scanning: Technical (volume/price) + Smart Money (insider/bulk deals)
+8. **Sentiment Agent** — News headline analysis; invalidates BUY signals on negative news
+9. **Decision Agent** — Supervisor; weights smart money higher; outputs STRONG BUY/BUY/WAIT/SELL/STRONG SELL
+
+### Simulation Layer
+
+Since real NSE API data is unavailable, the system simulates:
+- **Volume spikes**: Seeded RNG generates realistic volume patterns with 2–5x spikes in recent sessions
+- **Price anomalies**: ATR-based volatility with trend bias; flash crash/gap detection
+- **Smart money signals**: Probabilistic insider trade alerts, bulk deal notifications
+- **Sentiment**: Positive/Negative/Neutral news rotation per symbol seed
 
 ## Structure
 
 ```text
 artifacts-monorepo/
-├── artifacts/              # Deployable applications
-│   └── api-server/         # Express API server
-├── lib/                    # Shared libraries
-│   ├── api-spec/           # OpenAPI spec + Orval codegen config
-│   ├── api-client-react/   # Generated React Query hooks
-│   ├── api-zod/            # Generated Zod schemas from OpenAPI
-│   └── db/                 # Drizzle ORM schema + DB connection
-├── scripts/                # Utility scripts (single workspace package)
-│   └── src/                # Individual .ts scripts, run via `pnpm --filter @workspace/scripts run <script>`
-├── pnpm-workspace.yaml     # pnpm workspace (artifacts/*, lib/*, lib/integrations/*, scripts)
-├── tsconfig.base.json      # Shared TS options (composite, bundler resolution, es2022)
-├── tsconfig.json           # Root TS project references
-└── package.json            # Root package with hoisted devDeps
+├── artifacts/
+│   ├── ai-investor/       # React + Vite frontend
+│   │   └── src/
+│   │       ├── components/   # StockSearch, ConfidenceMeter, OpportunityRadar, EducationSidebar
+│   │       └── pages/        # Dashboard.tsx (main page)
+│   └── api-server/        # Express API server
+│       └── src/
+│           ├── agents/    # All 9 AI agents
+│           └── routes/    # analyze.ts, health.ts
+├── lib/
+│   ├── api-spec/          # OpenAPI spec + Orval codegen config
+│   ├── api-client-react/  # Generated React Query hooks
+│   └── api-zod/           # Generated Zod schemas from OpenAPI
 ```
 
-## TypeScript & Composite Projects
+## API Endpoints
 
-Every package extends `tsconfig.base.json` which sets `composite: true`. The root `tsconfig.json` lists all packages as project references. This means:
+- `POST /api/analyze` — Full 9-agent analysis. Input: `{ symbol: "RELIANCE.NS" }`. Returns signal, confidence, entry/SL/target, technical + fundamental analysis, explanation.
+- `GET /api/radar` — Opportunity radar with technical and smart money signals.
 
-- **Always typecheck from the root** — run `pnpm run typecheck` (which runs `tsc --build --emitDeclarationOnly`). This builds the full dependency graph so that cross-package imports resolve correctly. Running `tsc` inside a single package will fail if its dependencies haven't been built yet.
-- **`emitDeclarationOnly`** — we only emit `.d.ts` files during typecheck; actual JS bundling is handled by esbuild/tsx/vite...etc, not `tsc`.
-- **Project references** — when package A depends on package B, A's `tsconfig.json` must list B in its `references` array. `tsc --build` uses this to determine build order and skip up-to-date packages.
+## UI Features
 
-## Root Scripts
-
-- `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
-- `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
+- Dark navy glassmorphism theme (#0f172a background)
+- Animated confidence meter (red 0–60, yellow 60–80, green 80–100)
+- Confluence badges per analysis type
+- Right collapsible Education Sidebar (Liquidity Sweep, BOS, CHoCH with Beginner toggle)
+- Opportunity Radar widget with Price Action / Smart Money tabs
+- Framer Motion animations throughout
+- Mobile responsive
 
 ## Packages
 
-### `artifacts/api-server` (`@workspace/api-server`)
+### Backend (api-server)
+- `express`, `cors`, `pino`, `pino-http` — server
+- `@workspace/api-zod` — request/response validation
 
-Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` for request and response validation and `@workspace/db` for persistence.
+### Frontend (ai-investor)
+- `react`, `react-dom`, `@tanstack/react-query`, `wouter`
+- `framer-motion`, `lucide-react`, `@radix-ui/react-accordion`
+- `@workspace/api-client-react` — generated hooks
+- `tailwindcss`, `tw-animate-css`
 
-- Entry: `src/index.ts` — reads `PORT`, starts Express
-- App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
-- Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
-- Depends on: `@workspace/db`, `@workspace/api-zod`
-- `pnpm --filter @workspace/api-server run dev` — run the dev server
-- `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
-- Build bundles an allowlist of deps (express, cors, pg, drizzle-orm, zod, etc.) and externalizes the rest
+## Dev Commands
 
-### `lib/db` (`@workspace/db`)
-
-Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client instance and schema models.
-
-- `src/index.ts` — creates a `Pool` + Drizzle instance, exports schema
-- `src/schema/index.ts` — barrel re-export of all models
-- `src/schema/<modelname>.ts` — table definitions with `drizzle-zod` insert schemas (no models definitions exist right now)
-- `drizzle.config.ts` — Drizzle Kit config (requires `DATABASE_URL`, automatically provided by Replit)
-- Exports: `.` (pool, db, schema), `./schema` (schema only)
-
-Production migrations are handled by Replit when publishing. In development, we just use `pnpm --filter @workspace/db run push`, and we fallback to `pnpm --filter @workspace/db run push-force`.
-
-### `lib/api-spec` (`@workspace/api-spec`)
-
-Owns the OpenAPI 3.1 spec (`openapi.yaml`) and the Orval config (`orval.config.ts`). Running codegen produces output into two sibling packages:
-
-1. `lib/api-client-react/src/generated/` — React Query hooks + fetch client
-2. `lib/api-zod/src/generated/` — Zod schemas
-
-Run codegen: `pnpm --filter @workspace/api-spec run codegen`
-
-### `lib/api-zod` (`@workspace/api-zod`)
-
-Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used by `api-server` for response validation.
-
-### `lib/api-client-react` (`@workspace/api-client-react`)
-
-Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
-
-### `scripts` (`@workspace/scripts`)
-
-Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
+- `pnpm --filter @workspace/ai-investor run dev` — frontend dev server
+- `pnpm --filter @workspace/api-server run dev` — backend dev server
+- `pnpm --filter @workspace/api-spec run codegen` — regenerate API client after spec change

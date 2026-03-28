@@ -1,0 +1,120 @@
+: AI Investor (Hybrid Intelligence Edition)
+Role: You are a senior full-stack AI engineer, quant developer, and product designer.
+Objective: Build a COMPLETE, production-ready web application.
+🔥 NAME:
+AI Investor – Hybrid Multi-Agent Decision Engine + Opportunity Radar
+🚀 VISION (UPDATED)
+Retail traders fail because they see the Price (Chart) but miss the Story (Filings/Insider Activity).
+This system solves that by correlating Technical Breakouts with Fundamental Signals (Smart Money).
+The "Winning" Logic:
+Technical Agents find the Time to buy.
+Fundamental Agents find the Reason to buy.
+LLM Explanation Agent explains it all in plain English.
+🆕 CORE FEATURE 1: HYBRID OPPORTUNITY RADAR (The "Double-Barrel" Engine)
+Constraint: Do NOT remove the existing Volume/Price logic. Add "Smart Money" as a parallel detection layer.
+The Opportunity Agent must now run TWO parallel scanning modules:
+Module A: Technical Radar (Existing)
+Triggers: Unusual Volume Spikes, Flash Crashes, Momentum Gaps.
+Output: "Abnormal buying pressure detected in ADANIENT."
+Module B: Smart Money Radar (NEW - Essential for Hackathon)
+Triggers:
+Insider Trades: Promoter/Director buying (high conviction).
+Bulk/Block Deals: Institutional entry (>0.5% equity).
+Filings: Positive earnings surprises or debt reduction.
+Output: "Promoter Group acquired ₹50Cr shares via open market."
+🆕 CORE FEATURE 2: SENTIMENT AGENT
+Add a new agent that acts as a "bs-detector" for technical signals.
+Input: News headlines, Management Commentary (via simple scrapers).
+Logic: If Technical = BUY but Sentiment = NEGATIVE (e.g., "Tax Raid"), invalidate the signal.
+🎯 CORE OUTPUT (ENRICHED)
+User enters stock (e.g., RELIANCE.NS)
+Return:
+Technical Layer: Trend, Pattern, Signal, Entry/SL/Target.
+Fundamental Layer (NEW): Insider Confidence, Institutional Flow.
+Verification Layer: Backtest Success Rate, Sentiment Score.
+Synthesis: Final Confidence Score (0–100).
+🧠 AI ARCHITECTURE (EXPANDED 9-AGENT SYSTEM)
+Use a Supervisor/Orchestrator pattern.
+Pattern Agent (Technical)
+Detects: Breakout, Breakdown, Range, Reversal, FVG.
+Trend Agent (Technical)
+MA20/MA50 Slopes, ADX Structure.
+Risk Agent (Safety)
+Calculates Dynamic Position Sizing & R:R Ratio.
+Backtest Agent (Validation - WINNER)
+Logic: "How often has [Pattern X] worked on [Stock Y] in the last 5 years?"
+Output: "68% Historical Success Rate."
+Confidence Agent (Scoring)
+Bayesian scoring of Signal Confluence.
+Explanation Agent (LLM)
+Synthesizes Technical + Fundamental data into a narrative.
+Opportunity Agent (HYBRID)
+Sub-Agent A: Price/Volume Scanner.
+Sub-Agent B (NEW): NSE/BSE Filing Scanner (Bulk Deals/Insider).
+Sentiment Agent (NEW)
+News & Management Tone Analysis.
+Decision Agent (Supervisor)
+The "Judge." Weights Smart Money signals higher than Retail signals.
+⚙️ TECH STACK (STRICT)
+Backend: Python, FastAPI (Async).
+Data: yfinance (Price), nsepython (Filings/Option Chain).
+AI: OpenAI API (GPT-4o or mini).
+Frontend: React (Vite), Tailwind CSS, Framer Motion.
+State: LangGraph or simple Agent Chain.
+🔥 CORE BACKEND FLOW (UPDATED)
+Endpoint: POST /analyze
+Steps:
+Parallel Fetch:
+Get Candles (yfinance).
+Get Filings/Deals (nsepython or mock scraper if API limited).
+Fan-Out Processing:
+Run Technical Agents (Pattern, Trend, Backtest).
+Run Fundamental Agents (Opportunity Module B, Sentiment).
+Synthesis:
+Decision Agent aggregates votes.
+Explanation Agent generates the "Story."
+Response.
+📊 OUTPUT FORMAT (UPDATED)
+json
+{
+  "stock": "RELIANCE.NS",
+  "decision": {
+    "signal": "STRONG BUY",
+    "confidence": 89,
+    "entry": 2450,
+    "stop_loss": 2380,
+    "target": 2600
+  },
+  "technical_analysis": {
+    "trend": "Bullish",
+    "pattern": "Ascending Triangle",
+    "success_rate": "72% (last 5 years)",
+    "volume_alert": "3x Avg Volume Detected"
+  },
+  "fundamental_analysis": {
+    "smart_money_alert": "Promoter Entity acquired 50k shares",
+    "bulk_deal": "Goldman Sachs bought ₹200Cr block @ 2440",
+    "sentiment": "Positive Management Commentary"
+  },
+  "explanation": "High conviction setup. The stock is breaking out (Technical), confirmed by Promoter buying this morning (Fundamental).",
+  "beginner_tip": "The 'Smart Money' is buying, which confirms the chart pattern is real."
+}
+Use code with caution.
+
+🖥️ FRONTEND (UPGRADE)
+1. Top Decision Card (Enhanced)
+Display Signal & Confidence.
+Add "Confluence Badges":
+🟢 Chart Breakout
+🟣 Insider Buying (New Purple Badge for Fundamentals)
+🔵 High Volume
+2. Opportunity Radar Widget
+Tab 1: Price Action: "Surge in Tata Motors"
+Tab 2: Smart Money (NEW): "HDFC Bank: Insider Trade Detected"
+3. Pattern Success Badge
+"This pattern has a 68% win rate on this stock."
+🧠 BEGINNER MODE (MAINTAINED)
+Toggle ON:
+"Insider Trade" → "Company Owners Buying"
+"Bulk Deal" → "Big Banks Buying"
+"FVG" → "Price Imbalance"

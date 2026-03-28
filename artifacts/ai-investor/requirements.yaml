@@ -1,0 +1,16 @@
+packages:
+  "framer-motion": "For smooth, premium animations and layout transitions across the glassmorphic UI"
+  "clsx": "For conditional class name joining"
+  "tailwind-merge": "For merging tailwind classes without conflicts in components"
+  "@radix-ui/react-slot": "Required for building accessible UI components"
+  "@radix-ui/react-accordion": "For the educational sidebar sections"
+
+images:
+  - path: "artifacts/ai-investor/public/images/terminal-bg.png"
+    description: "Deep dark navy blue abstract gradient mesh with very subtle, glowing cyan and emerald grid lines, giving a high-tech financial terminal vibe. Dark mode, premium, minimal noise."
+    aspect_ratio: "16:9"
+
+notes:
+  - App relies on Orval-generated hooks from @workspace/api-client-react
+  - Dark mode is forced by default via CSS to match the premium financial terminal aesthetic
+  - Uses Framer Motion heavily for the "Agent Analysis" simulation loading states

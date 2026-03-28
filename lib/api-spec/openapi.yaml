@@ -1,15 +1,16 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: AI Investor Multi-Agent Trading Decision Engine API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: analysis
+    description: AI stock analysis
 paths:
   /healthz:
     get:
@@ -24,6 +25,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /analyze:
+    post:
+      operationId: analyzeStock
+      tags: [analysis]
+      summary: Analyze a stock
+      description: Run multi-agent AI analysis on a given stock symbol
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalyzeRequest"
+      responses:
+        "200":
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisResult"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /radar:
+    get:
+      operationId: getOpportunityRadar
+      tags: [analysis]
+      summary: Get opportunity radar
+      description: Get list of stocks with notable signals
+      responses:
+        "200":
+          description: Radar results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RadarResponse"
 components:
   schemas:
     HealthStatus:
@@ -34,3 +79,195 @@ components:
       required:
         - status
 
+    AnalyzeRequest:
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: Stock symbol (e.g. RELIANCE.NS, AAPL)
+      required:
+        - symbol
+
+    TechnicalAnalysis:
+      type: object
+      properties:
+        trend:
+          type: string
+          enum: [Bullish, Bearish, Sideways]
+        pattern:
+          type: string
+        success_rate:
+          type: string
+        volume_alert:
+          type: string
+        rsi:
+          type: number
+        macd_signal:
+          type: string
+        ma20:
+          type: number
+        ma50:
+          type: number
+        price_change_pct:
+          type: number
+      required:
+        - trend
+        - pattern
+        - success_rate
+        - volume_alert
+        - rsi
+        - macd_signal
+        - ma20
+        - ma50
+        - price_change_pct
+
+    FundamentalAnalysis:
+      type: object
+      properties:
+        smart_money_alert:
+          type: string
+        bulk_deal:
+          type: string
+        sentiment:
+          type: string
+        insider_confidence:
+          type: string
+        institutional_flow:
+          type: string
+      required:
+        - smart_money_alert
+        - bulk_deal
+        - sentiment
+        - insider_confidence
+        - institutional_flow
+
+    Decision:
+      type: object
+      properties:
+        signal:
+          type: string
+          enum: [STRONG BUY, BUY, WAIT, SELL, STRONG SELL]
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        entry:
+          type: number
+        stop_loss:
+          type: number
+        target:
+          type: number
+        risk_reward:
+          type: string
+      required:
+        - signal
+        - confidence
+        - entry
+        - stop_loss
+        - target
+        - risk_reward
+
+    AnalysisResult:
+      type: object
+      properties:
+        stock:
+          type: string
+        current_price:
+          type: number
+        decision:
+          $ref: "#/components/schemas/Decision"
+        technical_analysis:
+          $ref: "#/components/schemas/TechnicalAnalysis"
+        fundamental_analysis:
+          $ref: "#/components/schemas/FundamentalAnalysis"
+        explanation:
+          type: string
+        beginner_tip:
+          type: string
+        reasoning:
+          type: string
+        confluence_badges:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfluenceBadge"
+        timestamp:
+          type: string
+      required:
+        - stock
+        - current_price
+        - decision
+        - technical_analysis
+        - fundamental_analysis
+        - explanation
+        - beginner_tip
+        - reasoning
+        - confluence_badges
+        - timestamp
+
+    ConfluenceBadge:
+      type: object
+      properties:
+        label:
+          type: string
+        type:
+          type: string
+          enum: [technical, fundamental, risk, sentiment]
+        active:
+          type: boolean
+      required:
+        - label
+        - type
+        - active
+
+    RadarItem:
+      type: object
+      properties:
+        symbol:
+          type: string
+        name:
+          type: string
+        signal:
+          type: string
+        alert:
+          type: string
+        confidence:
+          type: integer
+        type:
+          type: string
+          enum: [technical, smart_money]
+        price_change:
+          type: number
+      required:
+        - symbol
+        - name
+        - signal
+        - alert
+        - confidence
+        - type
+        - price_change
+
+    RadarResponse:
+      type: object
+      properties:
+        technical:
+          type: array
+          items:
+            $ref: "#/components/schemas/RadarItem"
+        smart_money:
+          type: array
+          items:
+            $ref: "#/components/schemas/RadarItem"
+      required:
+        - technical
+        - smart_money
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+        - message

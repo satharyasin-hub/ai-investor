@@ -1,0 +1,313 @@
+You are a senior full-stack AI engineer, quant developer, and product designer.
+
+Build a COMPLETE, production-ready web application:
+
+🔥 NAME:
+AI Investor – Multi-Agent Trading Decision Engine
+
+---
+
+# 🚀 VISION (VERY IMPORTANT)
+
+Retail traders fail because:
+- They rely on emotions
+- They follow noisy signals
+- They don't understand WHY a trade works
+
+This system solves that by using:
+👉 Multi-Agent AI reasoning
+👉 Data-driven decisions
+👉 Plain-English explanations
+
+Unlike traditional bots (rule-based),
+this system uses:
+🧠 LLM-powered Explanation Agent
+to interpret context, making decisions safer and more understandable.
+
+---
+
+# 🎯 CORE OUTPUT
+
+User enters stock (e.g., RELIANCE.NS)
+
+Return:
+
+- Trend (Bullish / Bearish / Sideways)
+- Pattern (Breakout / Breakdown / Range / Reversal / Momentum)
+- Signal (BUY / SELL / WAIT)
+- Entry price
+- Stop Loss
+- Target
+- Confidence Score (0–100)
+- Explanation (simple English)
+- AI Reasoning Summary
+
+---
+
+# 🧠 AI ARCHITECTURE (IMPORTANT FOR JUDGES)
+
+Use a MULTI-AGENT SYSTEM:
+
+1. Pattern Agent
+   - Detect:
+     - Breakout
+     - Breakdown
+     - Range
+     - Reversal
+     - Momentum expansion
+
+2. Trend Agent
+   - Bullish / Bearish / Sideways
+   - Based on:
+     - MA20 / MA50
+     - Price structure
+
+3. Decision Agent
+   - Combine all signals
+   - Output: BUY / SELL / WAIT
+
+4. Risk Agent
+   - Entry
+   - Stop Loss
+   - Target (RR ≥ 1:2)
+
+5. Confidence Agent
+   Score based on:
+   - Indicator alignment
+   - Trend strength
+   - Pattern clarity
+
+6. Explanation Agent (LLM REQUIRED)
+   Use OpenAI API:
+   - Generate beginner-friendly explanation
+   - Explain WHY trade exists
+   - Convert technical → simple language
+
+---
+
+# ⚙️ TECH STACK (STRICT)
+
+Backend:
+- Python
+- FastAPI (low latency inference)
+
+Indicators:
+- pandas
+- numpy
+- pandas_ta (IMPORTANT for richer indicators)
+
+Frontend:
+- React (Vite)
+- Tailwind CSS
+- Framer Motion (animations)
+
+Data:
+- yfinance (real market data)
+
+AI:
+- OpenAI API (use placeholder key)
+
+---
+
+# 📁 PROJECT STRUCTURE (STRICT)
+
+ai-investor/
+│
+├── backend/
+│   ├── main.py
+│   ├── agents/
+│   │   ├── pattern_agent.py
+│   │   ├── trend_agent.py
+│   │   ├── decision_agent.py
+│   │   ├── risk_agent.py
+│   │   ├── confidence_agent.py
+│   │   ├── explanation_agent.py
+│   │
+│   ├── services/
+│   │   ├── data_service.py
+│   │
+│   ├── utils/
+│   │   ├── indicators.py
+│   │
+│   ├── requirements.txt
+│
+├── frontend/
+│   ├── index.html
+│   ├── package.json
+│   ├── tailwind.config.js
+│   ├── src/
+│   │   ├── main.jsx
+│   │   ├── App.jsx
+│   │   ├── api.js
+│   │   ├── components/
+│   │   │   ├── StockInput.jsx
+│   │   │   ├── ResultCard.jsx
+│   │   │   ├── ConfidenceBar.jsx
+│   │   │   ├── Loader.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   ├── ConceptCard.jsx
+│   │   │   ├── ToggleSwitch.jsx
+│
+└── README.md
+
+---
+
+# 🔥 CORE BACKEND
+
+Endpoint:
+
+POST /analyze
+
+Input:
+{
+  "symbol": "RELIANCE.NS"
+}
+
+Steps:
+1. Fetch data (yfinance)
+2. Calculate:
+   - RSI
+   - MACD
+   - MA20 / MA50
+   - Volume spikes
+3. Run all agents
+4. Return structured JSON
+
+---
+
+# 📊 OUTPUT FORMAT (STRICT)
+
+{
+  "stock": "RELIANCE",
+  "trend": "Bullish",
+  "pattern": "Breakout",
+  "signal": "BUY",
+  "entry": 2450,
+  "stop_loss": 2380,
+  "target": 2600,
+  "confidence": 82,
+  "explanation": "Stock is in uptrend and broke resistance with strong momentum.",
+  "reasoning": "MA crossover + RSI strength + breakout confirmation"
+}
+
+---
+
+# 🖥️ FRONTEND (IMPORTANT FOR WINNING)
+
+Design:
+- Dark theme (#0f172a)
+- Glassmorphism cards
+- Smooth animations
+
+---
+
+## Components:
+
+1. StockInput
+2. ResultCard
+3. ConfidenceBar
+4. Loader
+
+---
+
+# 🧠 BEGINNER EDUCATION SIDEBAR (VERY IMPORTANT DIFFERENTIATOR)
+
+Add RIGHT SIDE COLLAPSIBLE SIDEBAR:
+
+Explain:
+- Liquidity Sweep
+- BOS
+- CHoCH
+
+Features:
+- Expandable cards
+- Toggle:
+  "Explain Like I'm Beginner"
+
+Use:
+- Framer Motion animations
+- Glass UI
+- Lucide icons
+
+---
+
+# 🎯 UX FEATURES
+
+- Real-time loading animation
+- Error handling
+- Mobile responsive
+- Confidence color system:
+  - 0–60 → Red
+  - 60–80 → Yellow
+  - 80–100 → Green
+
+---
+
+# ⚡ PERFORMANCE
+
+- FastAPI async
+- Lightweight API
+- Optimized calculations
+
+---
+
+# 🚀 DEMO READY
+
+Use:
+- RELIANCE.NS
+- AAPL
+
+---
+
+# 🧠 JUDGE WINNING POINTS
+
+Mention clearly:
+
+- Multi-agent architecture (not single model)
+- Explainability layer (LLM)
+- Retail-friendly output
+- Real-time data
+- Risk management included
+
+---
+
+# 📦 REQUIREMENTS
+
+Backend:
+fastapi
+uvicorn
+yfinance
+pandas
+numpy
+pandas_ta
+openai
+
+Frontend:
+react
+vite
+tailwindcss
+framer-motion
+lucide-react
+
+---
+
+# ▶️ RUN
+
+Backend:
+cd backend
+uvicorn main:app --reload
+
+Frontend:
+cd frontend
+npm install
+npm run dev
+
+---
+
+# IMPORTANT RULES
+
+- Modular code
+- No fake data
+- Production-ready
+- Clean UI
+- No errors

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Lightbulb, Info, ChevronDown, ChevronRight, GraduationCap, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,17 @@ export function EducationSidebar({ isOpen, onClose }: { isOpen: boolean; onClose
   const [beginnerMode, setBeginnerMode] = useState(true);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -38,7 +49,7 @@ export function EducationSidebar({ isOpen, onClose }: { isOpen: boolean; onClose
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
             onClick={onClose}
           />
           <motion.div
@@ -46,7 +57,7 @@ export function EducationSidebar({ isOpen, onClose }: { isOpen: boolean; onClose
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 right-0 w-full max-w-sm glass-panel border-r-0 border-t-0 border-b-0 rounded-none z-50 overflow-y-auto flex flex-col"
+            className="fixed inset-y-0 right-0 w-full max-w-sm glass-panel border-r-0 border-t-0 border-b-0 rounded-none z-50 overflow-y-auto flex flex-col shadow-2xl shadow-black/50"
           >
             <div className="p-6 flex-1 flex flex-col">
               <div className="flex items-center justify-between mb-8">
@@ -56,7 +67,7 @@ export function EducationSidebar({ isOpen, onClose }: { isOpen: boolean; onClose
                   </div>
                   <h2 className="text-xl font-display font-semibold">Trader Academy</h2>
                 </div>
-                <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors lg:hidden">
+                <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>

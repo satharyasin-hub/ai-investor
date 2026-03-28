@@ -15,19 +15,26 @@ export interface StockData {
 }
 
 const STOCK_PROFILES: Record<string, { name: string; basePrice: number; sector: string }> = {
-  "RELIANCE.NS": { name: "Reliance Industries", basePrice: 2450, sector: "Energy" },
-  "TCS.NS": { name: "Tata Consultancy Services", basePrice: 3680, sector: "IT" },
+  "RELIANCE.NS": { name: "Reliance Industries", basePrice: 2450, sector: "Energy & Retail" },
+  "TCS.NS": { name: "Tata Consultancy Services", basePrice: 3680, sector: "IT Services" },
   "HDFCBANK.NS": { name: "HDFC Bank", basePrice: 1620, sector: "Banking" },
-  "INFY.NS": { name: "Infosys", basePrice: 1480, sector: "IT" },
+  "INFY.NS": { name: "Infosys", basePrice: 1480, sector: "IT Services" },
   "TATAMOTORS.NS": { name: "Tata Motors", basePrice: 785, sector: "Auto" },
   "ADANIENT.NS": { name: "Adani Enterprises", basePrice: 2340, sector: "Conglomerate" },
   "ICICIBANK.NS": { name: "ICICI Bank", basePrice: 1120, sector: "Banking" },
-  "WIPRO.NS": { name: "Wipro", basePrice: 465, sector: "IT" },
-  "AAPL": { name: "Apple Inc.", basePrice: 178, sector: "Technology" },
-  "MSFT": { name: "Microsoft Corp.", basePrice: 415, sector: "Technology" },
-  "GOOGL": { name: "Alphabet Inc.", basePrice: 175, sector: "Technology" },
-  "TSLA": { name: "Tesla Inc.", basePrice: 250, sector: "EV" },
-  "NVDA": { name: "NVIDIA Corp.", basePrice: 875, sector: "Semiconductors" },
+  "WIPRO.NS": { name: "Wipro", basePrice: 465, sector: "IT Services" },
+  "SBIN.NS": { name: "State Bank of India", basePrice: 825, sector: "PSU Banking" },
+  "BAJFINANCE.NS": { name: "Bajaj Finance", basePrice: 7150, sector: "NBFC" },
+  "BAJAJFINSV.NS": { name: "Bajaj Finserv", basePrice: 1680, sector: "Financial Services" },
+  "HINDUNILVR.NS": { name: "Hindustan Unilever", basePrice: 2350, sector: "FMCG" },
+  "AXISBANK.NS": { name: "Axis Bank", basePrice: 1095, sector: "Banking" },
+  "KOTAKBANK.NS": { name: "Kotak Mahindra Bank", basePrice: 1740, sector: "Banking" },
+  "MARUTI.NS": { name: "Maruti Suzuki", basePrice: 11200, sector: "Auto" },
+  "SUNPHARMA.NS": { name: "Sun Pharma", basePrice: 1720, sector: "Pharma" },
+  "ASIANPAINT.NS": { name: "Asian Paints", basePrice: 2650, sector: "Consumer" },
+  "LT.NS": { name: "Larsen & Toubro", basePrice: 3450, sector: "Infrastructure" },
+  "NTPC.NS": { name: "NTPC Limited", basePrice: 365, sector: "Power" },
+  "POWERGRID.NS": { name: "Power Grid Corp", basePrice: 315, sector: "Power" },
 };
 
 function seededRandom(seed: number): number {

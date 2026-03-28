@@ -1,0 +1,145 @@
+You are an expert full-stack React + FastAPI developer.
+
+Fix and localize the AI Investor app for the Indian stock market (NSE/BSE).
+
+---
+
+🎯 GOAL
+
+Convert the app from US-focused to INDIA-focused:
+
+- Only Indian stocks (NSE)
+- Currency in ₹ (INR)
+- Default examples must be Indian companies
+- Data must use ".NS" suffix
+
+---
+
+## 🇮🇳 REQUIRED CHANGES
+
+### 1. STOCK INPUT (IMPORTANT)
+
+Change placeholder:
+
+FROM:
+"Enter stock symbol (e.g. AAPL, NVDA)"
+
+TO:
+"Enter stock (e.g. RELIANCE.NS, TCS.NS)"
+
+---
+
+### 2. TRENDING STOCKS (VERY IMPORTANT)
+
+REMOVE US stocks:
+❌ AAPL
+❌ NVDA
+❌ TSLA
+
+ADD Indian stocks:
+
+✔ RELIANCE.NS
+✔ TCS.NS
+✔ INFY.NS
+✔ HDFCBANK.NS
+✔ ICICIBANK.NS
+✔ SBIN.NS
+✔ ADANIENT.NS
+✔ BAJFINANCE.NS
+
+---
+
+### 3. CURRENCY FIX (CRITICAL)
+
+Replace ALL dollar symbols:
+
+❌ $2450
+✔ ₹2450
+
+---
+
+### 4. FRONTEND FORMATTING
+
+Use Indian number format:
+
+Example:
+₹1,23,456.78
+
+Use:
+
+new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR"
+}).format(value)
+
+---
+
+### 5. BACKEND DATA (VERY IMPORTANT)
+
+Ensure yfinance uses NSE format:
+
+Example:
+RELIANCE.NS
+TCS.NS
+
+If user enters "RELIANCE":
+→ Automatically convert to "RELIANCE.NS"
+
+---
+
+### 6. AUTO-CONVERSION LOGIC
+
+In backend:
+
+if not symbol.endswith(".NS"):
+    symbol = symbol + ".NS"
+
+---
+
+### 7. OPPORTUNITY RADAR (INDIA MODE)
+
+Replace:
+
+❌ "Apple breakout"
+✔ "Reliance breakout"
+
+❌ "Nvidia volume surge"
+✔ "Adani Enterprises volume surge"
+
+---
+
+### 8. UI LABEL FIXES
+
+Change wording:
+
+❌ "Stock Market AI"
+✔ "Indian Market AI"
+
+❌ "Wall Street signals"
+✔ "NSE Smart Money Signals"
+
+---
+
+### 9. OPTIONAL (STRONG BONUS)
+
+Add small badge:
+
+🇮🇳 "India Mode Enabled"
+
+---
+
+## 🚀 RESULT
+
+After fix:
+
+- Fully Indian stock app
+- NSE focused
+- ₹ currency everywhere
+- Hackathon-ready
+- Judges will instantly relate
+
+---
+
+IMPORTANT:
+Do NOT break existing features.
+Only replace US logic with Indian equivalents.

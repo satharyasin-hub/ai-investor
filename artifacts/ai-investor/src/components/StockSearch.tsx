@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Search, TrendingUp } from "lucide-react";
 import { Button } from "./ui/button";
 
-const POPULAR_STOCKS = ["RELIANCE.NS", "AAPL", "TSLA", "TATAMOTORS.NS", "NVDA"];
+const POPULAR_STOCKS = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS", "ADANIENT.NS", "BAJFINANCE.NS"];
 
 interface StockSearchProps {
   onSearch: (symbol: string) => void;
@@ -29,7 +29,7 @@ export function StockSearch({ onSearch, isLoading }: StockSearchProps) {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter stock symbol (e.g. RELIANCE.NS, AAPL)..."
+          placeholder="Enter NSE stock (e.g. RELIANCE.NS, TCS.NS)..."
           className="w-full h-14 pl-12 pr-32 rounded-2xl glass-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-lg shadow-lg font-mono tracking-wider transition-all"
           disabled={isLoading}
         />

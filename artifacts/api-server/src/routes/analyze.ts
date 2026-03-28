@@ -22,7 +22,15 @@ router.post("/analyze", async (req, res) => {
       return;
     }
 
-    const { symbol } = parseResult.data;
+    let { symbol } = parseResult.data;
+
+    // Auto-append .NS for Indian stocks if not already suffixed
+    const upperSymbol = symbol.toUpperCase();
+    if (!upperSymbol.includes(".") ) {
+      symbol = upperSymbol + ".NS";
+    } else {
+      symbol = upperSymbol;
+    }
 
     const stockData = getStockData(symbol);
     const closes = stockData.ohlcv.map((d) => d.close);

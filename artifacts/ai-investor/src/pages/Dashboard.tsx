@@ -78,11 +78,16 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-semibold tracking-wide">
+              🇮🇳 India Mode — NSE Smart Money Signals
+            </span>
+          </div>
           <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 tracking-tight">
-            Multi-Agent <span className="text-gradient-primary">Trading Intelligence</span>
+            Indian Market <span className="text-gradient-primary">AI Intelligence</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-10">
-            Advanced AI agents analyze price action, smart money flow, and risk parameters to generate institutional-grade trading signals.
+            Multi-agent AI analyzes NSE price action, promoter activity, bulk deals, and institutional flow to generate institutional-grade trading signals.
           </p>
           
           <StockSearch onSearch={handleSearch} isLoading={analyzeMutation.isPending} />

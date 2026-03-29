@@ -155,3 +155,64 @@ AI + Trading Systems Builder
 
 AI Investor bridges the gap between market data and investor decisions.
 Turning complexity into clarity — and signals into action.
+t Notes (Important)
+🧠 Why the app is deployed on Replit
+
+This project is designed to run on Replit’s full-stack runtime environment, which supports:
+
+Persistent backend servers
+Built-in AI integrations
+Seamless frontend + backend execution
+🤖 Replit AI Integration Dependency
+
+The AI layer (including multi-agent analysis and AI video narration) relies on:
+
+Replit’s internal AI proxy layer
+Environment-based API handling managed by Replit
+
+👉 These credentials do not exist outside Replit
+
+❗ As a result, deploying this app on external platforms like Vercel will cause AI features to fail silently.
+
+⚙️ Backend Architecture Limitation (Vercel)
+
+This project uses a monorepo structure with:
+
+React (Vite) frontend
+Express.js backend (API server)
+
+However:
+
+Vercel primarily supports serverless functions
+It does not support long-running Express servers on the free tier
+
+👉 This leads to:
+
+API routes not executing properly
+AI engine failing
+Data not loading
+🚫 Why Vercel Deployment Fails
+Issue	Reason
+AI not working	Missing Replit AI proxy
+API not responding	No persistent backend
+App partially loads	Only frontend deployed
+✅ Recommended Deployment
+
+👉 Use Replit for full functionality
+
+Live Demo:
+
+https://mock-market-signals--yasinsathat81.replit.app
+🚀 Future Improvements (Production Ready)
+
+To make this app deployable outside Replit:
+
+Replace Replit AI proxy with direct OpenAI API integration
+Convert Express backend into:
+Serverless functions OR
+Deploy on Render / Railway / VPS
+Separate frontend and backend services
+🏁 Summary
+
+This app is optimized for Replit’s environment.
+External deployment requires backend and AI architecture changes.

@@ -216,3 +216,22 @@ Separate frontend and backend services
 
 This app is optimized for Replit’s environment.
 External deployment requires backend and AI architecture changes.
+🌐 Live Demo
+
+🚀 AI Investor – Multi-Agent Trading Engine
+
+👉 Try the app here:
+
+https://mock-market-signals--yasinsathat81.replit.app
+🧪 Demo Instructions
+Enter any NSE stock (e.g. RELIANCE.NS, TCS.NS)
+Click Analyze
+View:
+AI-generated BUY/SELL signal
+Confidence score
+Smart Money insights
+Trade setup (Entry, SL, Target)
+Scroll down to explore:
+📡 Opportunity Radar
+🎥 AI Market Video Engine
+🧠 AI Explanation

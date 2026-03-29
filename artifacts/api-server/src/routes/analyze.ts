@@ -32,7 +32,7 @@ router.post("/analyze", async (req, res) => {
       symbol = upperSymbol;
     }
 
-    const stockData = getStockData(symbol);
+    const stockData = await getStockData(symbol);
     const closes = stockData.ohlcv.map((d) => d.close);
 
     const rsiArr = calcRSI(closes);

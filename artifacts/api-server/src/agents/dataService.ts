@@ -1,3 +1,5 @@
+import { getLiveOHLCV } from "./priceService.js";
+
 export interface OHLCV {
   date: string;
   open: number;
@@ -14,27 +16,27 @@ export interface StockData {
   name: string;
 }
 
-const STOCK_PROFILES: Record<string, { name: string; basePrice: number; sector: string }> = {
-  "RELIANCE.NS": { name: "Reliance Industries", basePrice: 2450, sector: "Energy & Retail" },
-  "TCS.NS": { name: "Tata Consultancy Services", basePrice: 3680, sector: "IT Services" },
-  "HDFCBANK.NS": { name: "HDFC Bank", basePrice: 1620, sector: "Banking" },
-  "INFY.NS": { name: "Infosys", basePrice: 1480, sector: "IT Services" },
-  "TATAMOTORS.NS": { name: "Tata Motors", basePrice: 785, sector: "Auto" },
-  "ADANIENT.NS": { name: "Adani Enterprises", basePrice: 2340, sector: "Conglomerate" },
-  "ICICIBANK.NS": { name: "ICICI Bank", basePrice: 1120, sector: "Banking" },
-  "WIPRO.NS": { name: "Wipro", basePrice: 465, sector: "IT Services" },
-  "SBIN.NS": { name: "State Bank of India", basePrice: 825, sector: "PSU Banking" },
-  "BAJFINANCE.NS": { name: "Bajaj Finance", basePrice: 7150, sector: "NBFC" },
-  "BAJAJFINSV.NS": { name: "Bajaj Finserv", basePrice: 1680, sector: "Financial Services" },
-  "HINDUNILVR.NS": { name: "Hindustan Unilever", basePrice: 2350, sector: "FMCG" },
-  "AXISBANK.NS": { name: "Axis Bank", basePrice: 1095, sector: "Banking" },
-  "KOTAKBANK.NS": { name: "Kotak Mahindra Bank", basePrice: 1740, sector: "Banking" },
-  "MARUTI.NS": { name: "Maruti Suzuki", basePrice: 11200, sector: "Auto" },
-  "SUNPHARMA.NS": { name: "Sun Pharma", basePrice: 1720, sector: "Pharma" },
-  "ASIANPAINT.NS": { name: "Asian Paints", basePrice: 2650, sector: "Consumer" },
+export const STOCK_PROFILES: Record<string, { name: string; basePrice: number; sector: string }> = {
+  "RELIANCE.NS": { name: "Reliance Industries", basePrice: 1280, sector: "Energy & Retail" },
+  "TCS.NS": { name: "Tata Consultancy Services", basePrice: 3400, sector: "IT Services" },
+  "HDFCBANK.NS": { name: "HDFC Bank", basePrice: 1700, sector: "Banking" },
+  "INFY.NS": { name: "Infosys", basePrice: 1540, sector: "IT Services" },
+  "TATAMOTORS.NS": { name: "Tata Motors", basePrice: 960, sector: "Auto" },
+  "ADANIENT.NS": { name: "Adani Enterprises", basePrice: 2450, sector: "Conglomerate" },
+  "ICICIBANK.NS": { name: "ICICI Bank", basePrice: 1340, sector: "Banking" },
+  "WIPRO.NS": { name: "Wipro", basePrice: 480, sector: "IT Services" },
+  "SBIN.NS": { name: "State Bank of India", basePrice: 810, sector: "PSU Banking" },
+  "BAJFINANCE.NS": { name: "Bajaj Finance", basePrice: 7200, sector: "NBFC" },
+  "BAJAJFINSV.NS": { name: "Bajaj Finserv", basePrice: 1690, sector: "Financial Services" },
+  "HINDUNILVR.NS": { name: "Hindustan Unilever", basePrice: 2280, sector: "FMCG" },
+  "AXISBANK.NS": { name: "Axis Bank", basePrice: 1100, sector: "Banking" },
+  "KOTAKBANK.NS": { name: "Kotak Mahindra Bank", basePrice: 1790, sector: "Banking" },
+  "MARUTI.NS": { name: "Maruti Suzuki", basePrice: 11500, sector: "Auto" },
+  "SUNPHARMA.NS": { name: "Sun Pharma", basePrice: 1740, sector: "Pharma" },
+  "ASIANPAINT.NS": { name: "Asian Paints", basePrice: 2340, sector: "Consumer" },
   "LT.NS": { name: "Larsen & Toubro", basePrice: 3450, sector: "Infrastructure" },
-  "NTPC.NS": { name: "NTPC Limited", basePrice: 365, sector: "Power" },
-  "POWERGRID.NS": { name: "Power Grid Corp", basePrice: 315, sector: "Power" },
+  "NTPC.NS": { name: "NTPC Limited", basePrice: 350, sector: "Power" },
+  "POWERGRID.NS": { name: "Power Grid Corp", basePrice: 295, sector: "Power" },
 };
 
 function seededRandom(seed: number): number {
@@ -42,12 +44,14 @@ function seededRandom(seed: number): number {
   return x - Math.floor(x);
 }
 
-function generateOHLCV(basePrice: number, days: number, symbolSeed: number): OHLCV[] {
+function generateSimulatedOHLCV(basePrice: number, days: number, symbolSeed: number): OHLCV[] {
   const data: OHLCV[] = [];
-  let price = basePrice * (0.85 + seededRandom(symbolSeed) * 0.15);
   const baseVolume = 1000000 + seededRandom(symbolSeed + 1) * 5000000;
-
   const trend = seededRandom(symbolSeed + 99) > 0.5 ? 1 : -1;
+
+  // Anchor the starting price so simulation ends near basePrice
+  const totalDrift = trend * 0.003 * days;
+  let price = basePrice / Math.exp(totalDrift);
 
   for (let i = days; i >= 0; i--) {
     const dateObj = new Date();
@@ -65,7 +69,6 @@ function generateOHLCV(basePrice: number, days: number, symbolSeed: number): OHL
     const low = Math.min(open, close) * (1 - seededRandom(seed + 4) * volatility);
 
     let volume = baseVolume * (0.6 + seededRandom(seed + 5) * 0.8);
-
     if (i < 5 && seededRandom(seed + 6) > 0.6) {
       volume = volume * (2.5 + seededRandom(seed + 7) * 2);
     }
@@ -85,22 +88,38 @@ function generateOHLCV(basePrice: number, days: number, symbolSeed: number): OHL
   return data;
 }
 
-export function getStockData(symbol: string): StockData {
+export async function getStockData(symbol: string): Promise<StockData> {
   const upperSymbol = symbol.toUpperCase();
   const profile = STOCK_PROFILES[upperSymbol] || {
-    name: upperSymbol,
-    basePrice: 100 + (upperSymbol.charCodeAt(0) * 23) % 900,
+    name: upperSymbol.replace(".NS", ""),
+    basePrice: 500 + (upperSymbol.charCodeAt(0) * 23) % 2000,
     sector: "Unknown",
   };
 
+  // Try live Yahoo Finance data first
+  const liveOHLCV = await getLiveOHLCV(upperSymbol, 120);
+  if (liveOHLCV && liveOHLCV.length >= 20) {
+    const currentPrice = liveOHLCV[liveOHLCV.length - 1].close;
+    return { symbol: upperSymbol, name: profile.name, currentPrice, ohlcv: liveOHLCV };
+  }
+
+  // Fallback: simulation anchored to realistic basePrice
   const symbolSeed = upperSymbol.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const ohlcv = generateOHLCV(profile.basePrice, 120, symbolSeed);
+  const ohlcv = generateSimulatedOHLCV(profile.basePrice, 120, symbolSeed);
   const currentPrice = ohlcv[ohlcv.length - 1].close;
 
-  return {
-    symbol: upperSymbol,
-    name: profile.name,
-    currentPrice,
-    ohlcv,
+  return { symbol: upperSymbol, name: profile.name, currentPrice, ohlcv };
+}
+
+// Sync version for backward compat (uses simulation only, anchored to correct basePrice)
+export function getStockDataSync(symbol: string): StockData {
+  const upperSymbol = symbol.toUpperCase();
+  const profile = STOCK_PROFILES[upperSymbol] || {
+    name: upperSymbol.replace(".NS", ""),
+    basePrice: 500 + (upperSymbol.charCodeAt(0) * 23) % 2000,
+    sector: "Unknown",
   };
+  const symbolSeed = upperSymbol.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const ohlcv = generateSimulatedOHLCV(profile.basePrice, 120, symbolSeed);
+  return { symbol: upperSymbol, name: profile.name, currentPrice: ohlcv[ohlcv.length - 1].close, ohlcv };
 }

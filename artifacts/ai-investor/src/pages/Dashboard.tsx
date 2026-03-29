@@ -254,6 +254,15 @@ export default function Dashboard() {
         </motion.div>
       </main>
 
+      <div className="text-center mt-16 mb-10 px-4">
+        <p className="text-white/90 font-medium text-base tracking-wide">
+          From noise to signal — AI for the Indian investor.
+        </p>
+        <p className="mt-2 text-gray-500 text-sm">
+          Turning market data into clear, actionable decisions.
+        </p>
+      </div>
+
       <EducationSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     </div>
   );

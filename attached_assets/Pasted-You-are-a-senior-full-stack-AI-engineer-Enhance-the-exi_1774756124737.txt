@@ -1,0 +1,237 @@
+You are a senior full-stack AI engineer.
+
+Enhance the existing project:
+"AI Investor – Multi-Agent Trading Engine"
+
+DO NOT REMOVE EXISTING FEATURES.
+ADD a new module:
+
+🔥 FEATURE: AI Market Video Engine (Auto Video Generator)
+
+---
+
+## 🎯 GOAL
+
+Automatically generate short (30–90 sec) market update videos using real-time Indian stock data.
+
+Videos should include:
+- Market summary
+- Top movers
+- Sector performance
+- Smart money flow (FII/DII)
+- Opportunity highlights
+
+NO manual editing required.
+
+---
+
+## 🧱 BACKEND (FASTAPI)
+
+Create new endpoint:
+
+POST /generate-video
+
+Input:
+{
+  "market": "NSE"
+}
+
+---
+
+## ⚙️ BACKEND LOGIC
+
+### Step 1: Fetch Data
+
+Use:
+- yfinance → NIFTY, top stocks
+- nsepython → FII/DII, bulk deals (or mock if unavailable)
+
+Fetch:
+- NIFTY trend
+- Top gainers/losers
+- Sector performance (banking, IT, pharma)
+- FII/DII flow
+
+---
+
+### Step 2: Generate Script (LLM REQUIRED)
+
+Use OpenAI API.
+
+Prompt:
+
+"Generate a 60-second Indian stock market update in simple English.
+Include:
+- Market trend
+- Top movers
+- Sector highlights
+- Smart money activity
+Tone: News anchor style"
+
+Return script text.
+
+---
+
+### Step 3: Convert Text → Speech
+
+Use:
+- gTTS OR pyttsx3
+
+Save:
+audio.mp3
+
+---
+
+### Step 4: Generate Visual Frames
+
+Use:
+- matplotlib OR PIL
+
+Create slides:
+1. Title: "AI Market Update"
+2. NIFTY trend (Bullish/Bearish)
+3. Top gainers
+4. Top losers
+5. Sector rotation
+6. FII/DII flows
+7. Opportunity radar highlights
+
+Save images:
+frame1.png, frame2.png...
+
+---
+
+### Step 5: Create Video
+
+Use:
+moviepy
+
+Combine:
+- Images (slides)
+- Audio narration
+
+Output:
+video.mp4
+
+---
+
+## 📁 BACKEND FILES
+
+Create:
+
+backend/
+  ├── video_engine/
+  │   ├── script_generator.py
+  │   ├── voice_generator.py
+  │   ├── frame_generator.py
+  │   ├── video_builder.py
+
+---
+
+## 📦 REQUIREMENTS
+
+Add to requirements.txt:
+
+gtts
+moviepy
+matplotlib
+pillow
+
+---
+
+## 🖥️ FRONTEND (REACT)
+
+### Add New Section:
+
+"🎥 AI Market Video"
+
+---
+
+### UI COMPONENT
+
+Create:
+
+VideoGenerator.jsx
+
+Features:
+- Button: "Generate Market Video"
+- Loading animation
+- Video player after generation
+
+---
+
+### API CALL
+
+POST:
+http://127.0.0.1:8000/generate-video
+
+---
+
+### DISPLAY
+
+After response:
+- Show video using <video controls />
+- Show download button
+
+---
+
+## 🎨 UI DESIGN
+
+- Dark theme
+- Glass card style
+- Smooth animations
+
+---
+
+## 🇮🇳 INDIA-SPECIFIC (IMPORTANT)
+
+- Use ₹ symbol
+- Focus on NIFTY, BANKNIFTY
+- Show stocks like RELIANCE, TCS, INFY
+
+---
+
+## 🎬 OUTPUT FORMAT
+
+Return:
+
+{
+  "video_url": "/static/video.mp4",
+  "summary": "Market closed bullish with IT leading gains..."
+}
+
+---
+
+## 🚀 BONUS FEATURES (IMPORTANT)
+
+1. Add "Daily Market Wrap" button
+2. Add "Sector Rotation Chart"
+3. Add "Top 3 Opportunities"
+4. Add subtitles on video (optional)
+
+---
+
+## 🧠 IMPORTANT RULES
+
+- Code must be modular
+- No errors
+- Fully working pipeline
+- Do not break existing system
+
+---
+
+## 🔥 FINAL RESULT
+
+User clicks:
+
+👉 "Generate Video"
+
+System produces:
+
+🎬 AI-generated market video (like news channel)
+📊 Based on real data
+🧠 With AI narration
+
+---
+
+Return COMPLETE working code.

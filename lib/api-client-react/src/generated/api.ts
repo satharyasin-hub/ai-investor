@@ -20,8 +20,10 @@ import type {
   AnalysisResult,
   AnalyzeRequest,
   ErrorResponse,
+  GenerateVideoRequest,
   HealthStatus,
   RadarResponse,
+  VideoResponse,
 } from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
@@ -194,6 +196,93 @@ export const useAnalyzeStock = <
   TContext
 > => {
   return useMutation(getAnalyzeStockMutationOptions(options));
+};
+
+/**
+ * Generate a short AI-narrated market update with script, audio, and slides
+ * @summary Generate AI market video
+ */
+export const getGenerateMarketVideoUrl = () => {
+  return `/api/generate-video`;
+};
+
+export const generateMarketVideo = async (
+  generateVideoRequest: GenerateVideoRequest,
+  options?: RequestInit,
+): Promise<VideoResponse> => {
+  return customFetch<VideoResponse>(getGenerateMarketVideoUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(generateVideoRequest),
+  });
+};
+
+export const getGenerateMarketVideoMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof generateMarketVideo>>,
+    TError,
+    { data: BodyType<GenerateVideoRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof generateMarketVideo>>,
+  TError,
+  { data: BodyType<GenerateVideoRequest> },
+  TContext
+> => {
+  const mutationKey = ["generateMarketVideo"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof generateMarketVideo>>,
+    { data: BodyType<GenerateVideoRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return generateMarketVideo(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type GenerateMarketVideoMutationResult = NonNullable<
+  Awaited<ReturnType<typeof generateMarketVideo>>
+>;
+export type GenerateMarketVideoMutationBody = BodyType<GenerateVideoRequest>;
+export type GenerateMarketVideoMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Generate AI market video
+ */
+export const useGenerateMarketVideo = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof generateMarketVideo>>,
+    TError,
+    { data: BodyType<GenerateVideoRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof generateMarketVideo>>,
+  TError,
+  { data: BodyType<GenerateVideoRequest> },
+  TContext
+> => {
+  return useMutation(getGenerateMarketVideoMutationOptions(options));
 };
 
 /**

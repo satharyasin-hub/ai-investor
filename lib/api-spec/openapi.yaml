@@ -56,6 +56,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /generate-video:
+    post:
+      operationId: generateMarketVideo
+      tags: [analysis]
+      summary: Generate AI market video
+      description: Generate a short AI-narrated market update with script, audio, and slides
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateVideoRequest"
+      responses:
+        "200":
+          description: Video data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /radar:
     get:
       operationId: getOpportunityRadar
@@ -260,6 +285,61 @@ components:
       required:
         - technical
         - smart_money
+
+    GenerateVideoRequest:
+      type: object
+      properties:
+        market:
+          type: string
+          description: Market to cover (e.g. NSE)
+          default: NSE
+      required:
+        - market
+
+    VideoSlide:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        type:
+          type: string
+          enum: [title, nifty, gainers, losers, sectors, smart_money, opportunities]
+        data:
+          type: object
+          additionalProperties: true
+      required:
+        - title
+        - content
+        - type
+
+    VideoResponse:
+      type: object
+      properties:
+        script:
+          type: string
+        summary:
+          type: string
+        slides:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoSlide"
+        audio_b64:
+          type: string
+          description: Base64-encoded MP3 audio of the narration (may be empty)
+        market_data:
+          type: object
+          additionalProperties: true
+        generated_at:
+          type: string
+      required:
+        - script
+        - summary
+        - slides
+        - audio_b64
+        - market_data
+        - generated_at
 
     ErrorResponse:
       type: object

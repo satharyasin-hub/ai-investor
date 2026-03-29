@@ -72,6 +72,45 @@ export const AnalyzeStockResponse = zod.object({
 });
 
 /**
+ * Generate a short AI-narrated market update with script, audio, and slides
+ * @summary Generate AI market video
+ */
+export const generateMarketVideoBodyMarketDefault = `NSE`;
+
+export const GenerateMarketVideoBody = zod.object({
+  market: zod
+    .string()
+    .default(generateMarketVideoBodyMarketDefault)
+    .describe("Market to cover (e.g. NSE)"),
+});
+
+export const GenerateMarketVideoResponse = zod.object({
+  script: zod.string(),
+  summary: zod.string(),
+  slides: zod.array(
+    zod.object({
+      title: zod.string(),
+      content: zod.string(),
+      type: zod.enum([
+        "title",
+        "nifty",
+        "gainers",
+        "losers",
+        "sectors",
+        "smart_money",
+        "opportunities",
+      ]),
+      data: zod.record(zod.string(), zod.unknown()).optional(),
+    }),
+  ),
+  audio_b64: zod
+    .string()
+    .describe("Base64-encoded MP3 audio of the narration (may be empty)"),
+  market_data: zod.record(zod.string(), zod.unknown()),
+  generated_at: zod.string(),
+});
+
+/**
  * Get list of stocks with notable signals
  * @summary Get opportunity radar
  */

@@ -49,7 +49,7 @@ artifacts-monorepo/
 │   └── api-server/        # Express API server
 │       └── src/
 │           ├── agents/    # All 9 AI agents
-│           └── routes/    # analyze.ts, health.ts
+│           └── routes/    # analyze.ts, health.ts, video.ts
 ├── lib/
 │   ├── api-spec/          # OpenAPI spec + Orval codegen config
 │   ├── api-client-react/  # Generated React Query hooks
@@ -60,6 +60,7 @@ artifacts-monorepo/
 
 - `POST /api/analyze` — Full 9-agent analysis. Input: `{ symbol: "RELIANCE.NS" }`. Returns signal, confidence, entry/SL/target, technical + fundamental analysis, explanation.
 - `GET /api/radar` — Opportunity radar with technical and smart money signals.
+- `POST /api/generate-video` — AI Market Video Engine. Input: `{ market: "NSE" }`. Returns AI-generated script (gpt-5.2), TTS audio as base64 (gpt-audio/nova voice), 7 animated slides (title/nifty/gainers/losers/sectors/smart_money/opportunities), FII/DII flows, summary.
 
 ## UI Features
 
@@ -68,6 +69,7 @@ artifacts-monorepo/
 - Confluence badges per analysis type
 - Right collapsible Education Sidebar (Liquidity Sweep, BOS, CHoCH with Beginner toggle)
 - Opportunity Radar widget with Price Action / Smart Money tabs
+- **AI Market Video Engine** — "Generate Market Video" button triggers backend LLM pipeline: script (gpt-5.2) + audio narration (gpt-audio nova TTS) + 7 auto-advancing animated slides with progress bar, prev/next controls, dot navigation, script viewer, download
 - Framer Motion animations throughout
 - Mobile responsive
 
@@ -76,6 +78,8 @@ artifacts-monorepo/
 ### Backend (api-server)
 - `express`, `cors`, `pino`, `pino-http` — server
 - `@workspace/api-zod` — request/response validation
+- `@workspace/integrations-openai-ai-server` — Replit OpenAI integration (gpt-5.2 for scripts, gpt-audio for TTS)
+- AI env vars: `AI_INTEGRATIONS_OPENAI_BASE_URL`, `AI_INTEGRATIONS_OPENAI_API_KEY` (auto-provisioned via Replit)
 
 ### Frontend (ai-investor)
 - `react`, `react-dom`, `@tanstack/react-query`, `wouter`

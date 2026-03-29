@@ -8,6 +8,7 @@ import { AgentLoadingAnimation } from "@/components/AgentLoadingAnimation";
 import { ConfidenceMeter } from "@/components/ConfidenceMeter";
 import { EducationSidebar } from "@/components/EducationSidebar";
 import { OpportunityRadar } from "@/components/OpportunityRadar";
+import VideoGenerator from "@/components/VideoGenerator";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatNumber, cn } from "@/lib/utils";
@@ -242,6 +243,15 @@ export default function Dashboard() {
         </AnimatePresence>
 
         <OpportunityRadar onSelectStock={handleSearch} />
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-8"
+        >
+          <VideoGenerator />
+        </motion.div>
       </main>
 
       <EducationSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />

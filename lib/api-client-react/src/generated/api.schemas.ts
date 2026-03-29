@@ -118,6 +118,45 @@ export interface RadarResponse {
   smart_money: RadarItem[];
 }
 
+export interface GenerateVideoRequest {
+  /** Market to cover (e.g. NSE) */
+  market: string;
+}
+
+export type VideoSlideType =
+  (typeof VideoSlideType)[keyof typeof VideoSlideType];
+
+export const VideoSlideType = {
+  title: "title",
+  nifty: "nifty",
+  gainers: "gainers",
+  losers: "losers",
+  sectors: "sectors",
+  smart_money: "smart_money",
+  opportunities: "opportunities",
+} as const;
+
+export type VideoSlideData = { [key: string]: unknown };
+
+export interface VideoSlide {
+  title: string;
+  content: string;
+  type: VideoSlideType;
+  data?: VideoSlideData;
+}
+
+export type VideoResponseMarketData = { [key: string]: unknown };
+
+export interface VideoResponse {
+  script: string;
+  summary: string;
+  slides: VideoSlide[];
+  /** Base64-encoded MP3 audio of the narration (may be empty) */
+  audio_b64: string;
+  market_data: VideoResponseMarketData;
+  generated_at: string;
+}
+
 export interface ErrorResponse {
   error: string;
   message: string;

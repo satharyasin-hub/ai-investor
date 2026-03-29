@@ -16,15 +16,6 @@ export interface RadarData {
 export function getRadar(): RadarData {
   const technical: RadarItem[] = [
     {
-      symbol: "TATAMOTORS.NS",
-      name: "Tata Motors",
-      signal: "Breakout",
-      alert: "3.2x average volume detected — institutional accumulation above ₹785 resistance",
-      confidence: 78,
-      type: "technical",
-      price_change: 3.4,
-    },
-    {
       symbol: "ADANIENT.NS",
       name: "Adani Enterprises",
       signal: "Volume Surge",

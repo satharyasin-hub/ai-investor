@@ -8,14 +8,13 @@ const videoRouter = Router();
 
 const NSE_TOP_STOCKS = [
   "RELIANCE.NS", "TCS.NS", "HDFCBANK.NS", "INFY.NS", "ICICIBANK.NS",
-  "SBIN.NS", "BAJFINANCE.NS", "WIPRO.NS", "TATAMOTORS.NS", "ADANIENT.NS",
+  "SBIN.NS", "BAJFINANCE.NS", "WIPRO.NS", "ADANIENT.NS",
 ];
 
 const SECTORS = [
   { name: "Banking & Finance", stocks: ["HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS", "BAJFINANCE.NS"] },
   { name: "Information Technology", stocks: ["TCS.NS", "INFY.NS", "WIPRO.NS"] },
   { name: "Energy & Conglomerates", stocks: ["RELIANCE.NS", "ADANIENT.NS"] },
-  { name: "Auto & Manufacturing", stocks: ["TATAMOTORS.NS"] },
 ];
 
 interface MarketData {

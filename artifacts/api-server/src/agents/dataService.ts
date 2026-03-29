@@ -21,7 +21,6 @@ export const STOCK_PROFILES: Record<string, { name: string; basePrice: number; s
   "TCS.NS": { name: "Tata Consultancy Services", basePrice: 3400, sector: "IT Services" },
   "HDFCBANK.NS": { name: "HDFC Bank", basePrice: 1700, sector: "Banking" },
   "INFY.NS": { name: "Infosys", basePrice: 1540, sector: "IT Services" },
-  "TATAMOTORS.NS": { name: "Tata Motors", basePrice: 960, sector: "Auto" },
   "ADANIENT.NS": { name: "Adani Enterprises", basePrice: 2450, sector: "Conglomerate" },
   "ICICIBANK.NS": { name: "ICICI Bank", basePrice: 1340, sector: "Banking" },
   "WIPRO.NS": { name: "Wipro", basePrice: 480, sector: "IT Services" },
